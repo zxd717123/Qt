@@ -1,0 +1,27 @@
+#include "heroplane.h"
+#include"config.h"
+
+Heroplane::Heroplane()
+{
+   m_Plane.load(HERO_PATH);//加载飞机图片
+   //初始化坐标
+   m_X=GAME_WIDTH/2 - m_Plane.width()/2;
+   m_Y=GAME_HEIGHT - m_Plane.height()-20;//-20图片效果好
+   //划定矩形框范围，碰撞检测
+   m_Rect.setWidth(m_Plane.width());
+   m_Rect.setHeight(m_Plane.height());
+   m_Rect.moveTo(m_X,m_Y);
+   //初始化间隔记录变量
+   m_recorder=0;
+}
+void Heroplane::shoot()
+{
+    
+}
+
+void Heroplane::setPosition(int x, int y)
+{
+    m_X = x;
+    m_Y = y;
+    m_Rect.moveTo(m_X,m_Y);
+}

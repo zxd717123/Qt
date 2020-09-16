@@ -1,0 +1,78 @@
+#include "mainscene.h"
+#include "ui_mainscene.h"
+#include "config.h"
+#include <QIcon>
+#include <QPainter>
+#include<QMouseEvent>
+
+MainScene::MainScene(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::MainScene)
+{
+    ui->setupUi(this);
+    initScene();
+}
+
+MainScene::~MainScene()
+{
+    delete ui;
+}
+
+void MainScene::initScene()
+{
+    setFixedSize(GAME_WIDTH,GAME_HEIGHT);
+    setWindowTitle(GAME_TITLE);
+    setWindowIcon(QIcon(GAME_ICON));
+    m_Timer.setInterval(GAME_RATE);
+    //调用启动游戏的接口，实现地图滚动
+    playGame();
+}
+
+
+void MainScene::playGame()
+{
+    m_Timer.start();
+    connect(&m_Timer,&QTimer::timeout,[=](){
+        updatePosition();
+        update();
+    });
+}
+
+void MainScene::updatePosition()
+{
+    m_map.mapPosition();
+    m_hero.shoot();
+   
+}
+
+void MainScene::paintEvent(QPaintEvent * event)
+{
+    QPainter painter(this);
+
+    //绘制地图
+    painter.drawPixmap(0,m_map.m_map1_posY,m_map.m_map1);
+    painter.drawPixmap(0,m_map.m_map2_posY,m_map.m_map2);
+
+    //绘制飞机
+    painter.drawPixmap(m_hero.m_X,m_hero.m_Y,m_hero.m_Plane);
+  
+
+
+}
+
+void MainScene::mouseMoveEvent(QMouseEvent * event)
+{
+    int x = event->x()-m_hero.m_Rect.width()*0.5;
+    int y = event->y()-m_hero.m_Rect.height()*0.5;
+    //边界检测
+    if(x<=0)
+        x=0;
+    if(x>=GAME_WIDTH - m_hero.m_Rect.width())
+        x=GAME_WIDTH - m_hero.m_Rect.width();
+    if(y<=0)
+        y=0;
+    if(y>=GAME_HEIGHT - m_hero.m_Rect.height())
+        y=GAME_HEIGHT - m_hero.m_Rect.height();
+
+    m_hero.setPosition(x,y);//实现飞机拖拽
+}

@@ -1,0 +1,21 @@
+#ifndef HEROPLANE_H
+#define HEROPLANE_H
+#include<QPixmap>
+#include"bullet.h"
+
+class Heroplane
+{
+public:
+    Heroplane();
+    void shoot();//发射子弹
+    void setPosition(int x,int y);//设置飞机位置
+public:
+    QPixmap m_Plane;
+    int m_X,m_Y;//飞机坐标
+    QRect m_Rect;//飞机的矩形边框
+  
+
+
+};
+
+#endif // HEROPLANE_H
