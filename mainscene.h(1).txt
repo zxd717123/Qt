@@ -1,0 +1,46 @@
+#ifndef MAINSCENE_H
+#define MAINSCENE_H
+
+#include <QWidget>
+#include <QTimer>
+#include "map.h"
+#include "heroplane.h"
+#include "bullet.h"
+#include "enemyplane.h"
+#include "bomb.h"
+
+namespace Ui {
+class MainScene;
+}
+
+class MainScene : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit MainScene(QWidget *parent = nullptr);
+    ~MainScene();
+    void initScene();
+    QTimer m_Timer;
+    void playGame();
+    void updatePosition();
+    void paintEvent(QPaintEvent*event);
+    Map m_map;//zq
+    //重写鼠标移动事件
+    void mouseMoveEvent(QMouseEvent *);
+
+    //创建飞机对象
+    Heroplane m_hero;
+    QTimer m_timer;
+    void enemytoscene();
+    enemyplane m_enemys[ENEMY_NUM];
+    int m_recorder;
+    void collisionDetection();
+    //爆炸数组
+    bomb m_bombs[BOMB_NUM];
+
+private:
+    Ui::MainScene *ui;
+};
+
+#endif // MAINSCENE_H

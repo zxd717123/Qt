@@ -1,0 +1,19 @@
+#include "mainscene.h"
+#include <QApplication>
+#include <QResource>
+#include "config.h" //配置文件
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+
+    //将qrc文件转化成rcc文件，将内存缩小
+    //注册外部的二进制资源文件
+    QResource::registerResource(GAME_RES_PATH);
+    //在工程文件中删除res.qrc的代码
+
+    MainScene w;
+    w.show();
+
+    return a.exec();
+}
